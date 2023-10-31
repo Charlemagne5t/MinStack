@@ -1,44 +1,36 @@
 import java.util.Stack;
 
-public class MinStack {
-    private Stack<Node> stack;
-    private int currentMin;
+class MinStack {
+    private Node head;
 
-    public MinStack() {
-        stack = new Stack<>();
-        currentMin = Integer.MAX_VALUE;
-    }
-
-    public void push(int val) {
-        if(stack.empty()){
-            currentMin = val;
-        } else currentMin = Math.min(currentMin, val);
-
-        stack.push(new Node(val, currentMin));
+    public void push(int x) {
+        if (head == null)
+            head = new Node(x, x, null);
+        else
+            head = new Node(x, Math.min(x, head.min), head);
     }
 
     public void pop() {
-        stack.pop();
-        if(!stack.empty()) {
-            currentMin = Math.max(currentMin, stack.peek().min);
-        }
+        head = head.next;
     }
 
     public int top() {
-
-        return stack.peek().val;
+        return head.val;
     }
 
     public int getMin() {
-        return currentMin;
-    }
-}
-class Node{
-    int val;
-    int min;
-    public Node(int val, int min) {
-        this.val = val;
-        this.min = min;
+        return head.min;
     }
 
+    private class Node {
+        int val;
+        int min;
+        Node next;
+
+        private Node(int val, int min, Node next) {
+            this.val = val;
+            this.min = min;
+            this.next = next;
+        }
+    }
 }
